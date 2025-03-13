@@ -9,6 +9,7 @@ from torch.utils.checkpoint import checkpoint
 
 from rep_conv import RepConv
 
+
 def init_weights(m, mean=0.0, std=0.01):
     """
     Initialize the weights of a module.
@@ -21,6 +22,7 @@ def init_weights(m, mean=0.0, std=0.01):
     classname = m.__class__.__name__
     if classname.find("Conv") != -1:
         m.weight.data.normal_(mean, std)
+
 
 class SineGenerator(torch.nn.Module):
     """
@@ -137,6 +139,7 @@ class SineGenerator(torch.nn.Module):
 
         return sine_waveforms, voiced_mask, noise
 
+
 class ResidualBlock(torch.nn.Module):
     def __init__(
         self,
@@ -176,6 +179,7 @@ class ResidualBlock(torch.nn.Module):
                 x = self.act(x)
                 x = self.convs2[idx].inference(x)
         return x
+
 
 class SourceModuleHnNSF(torch.nn.Module):
     """
@@ -386,7 +390,7 @@ class HiFiGANNSFGenerator(torch.nn.Module):
             for conv_layer in l.convs1:
                 if hasattr(conv_layer, "convs"):
                     for conv in conv_layer.convs:
-                         remove_weight_norm(conv)
+                        remove_weight_norm(conv)
             if hasattr(l, "convs2") and l.use_additional_convs:
                 for conv_layer in l.convs2:
                     if hasattr(conv_layer, "convs"):
